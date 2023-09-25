@@ -8,8 +8,8 @@ def Yamldata = [
     'apiVersion': 'v1',
     'environment': env,
     'version': 1.0,
-    'appFamily': 'FBP',
-    'appName': 'FBP-product-app',
+    'appFamily': 'iep-test',
+    'appName': 'bg-sample',
     'buildID': buildID,
     'kind': 'deployment',
     'manifest': 'lines',
@@ -25,6 +25,7 @@ node {
     stage('Write Yaml') {
         writeYaml file: 'manifest.yaml', data: Yamldata, overwrite: true
         sh 'cat manifest.yaml'
+        archiveArtifacts artifacts: "manifest.yaml", fingerprint: true
     }
 
     stage('Env Select') {
@@ -47,17 +48,32 @@ node {
 }
 
 def iepBlueGreen() {
-    response = input message: "Fill out the following for a blue-green manifest.",
-                     id: 'bgResponse',
-                     parameters: [string(description: 'Current Version', name: 'currentVersion'),
-                                  string(description: 'Updating Version', name: 'updatingVersion'),
-                                  string(description: 'Current Build ID', name: 'currentBuildID'),
-                                  string(description: 'Updating Build ID', name: 'updatingBuildID'),
-                                  string(description: 'Blue Weight', name: 'blueWeight'),
-                                  string(description: 'Green Weight', name: 'greenWeight'),
-                                  choice(name: 'environment',
-                                  choices: envTestList)]
-    println(response)
+    stage('Blue-Green Deploy') {
 
+        copyArtifacts(projectName: env.JOB_NAME, selector: specific(env.BUILD_NUMBER), filter: 'manifest.yaml')
+
+        def file = readYaml file: "manifest.yaml"
+
+        response = input message: "Fill out the following for a blue-green manifest.",
+                        id: 'bgResponse',
+                        parameters: [string(description: 'Current Version', name: 'currentVersion'),
+                                    string(description: 'Updating Version', name: 'updatingVersion'),
+                                    string(description: 'Current Build ID', name: 'currentBuildID'),
+                                    string(description: 'Updating Build ID', name: 'updatingBuildID'),
+                                    string(description: 'Blue Weight', name: 'blueWeight'),
+                                    string(description: 'Green Weight', name: 'greenWeight'),
+                                    choice(name: 'environment',
+                                    choices: envTestList)]
+        println(response)
+
+        file['environment'] = response["environment"].toLowerCase()
+        file['version'] = response["currentVersion"] + "," + response["updatingVersion"]
+        file['buildID'] = response["currentBuildID"] + "," + response["updatingBuildID"]
+        file['kind'] = "promotion"
+
+        file['deployment'] = ["type": "BG",
+                              "blue": ["weight": response["blueWeight"]]
+                              "green": ["weight": response["greenWeight"]]]
+    }
 }
                                   
