@@ -74,6 +74,16 @@ def iepBlueGreen() {
         file['deployment'] = ["type": "BG",
                               "blue": ["weight": response["blueWeight"]],
                               "green": ["weight": response["greenWeight"]]]
+
+        sh """
+                if [ -f manifest.yaml ] ; then
+                        rm -f manifest.yaml
+                fi
+        """
+
+        writeYaml file: 'manifest.yaml', data: file, overwrite:true
+
+        sh 'cat manifest.yaml'
     }
 }
                                   
