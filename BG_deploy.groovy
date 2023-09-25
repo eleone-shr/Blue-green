@@ -47,7 +47,7 @@ node {
 }
 
 def iepBlueGreen() {
-    response = input message "Fill out the following for a blue-green manifest.",
+    response = input message: "Fill out the following for a blue-green manifest.",
                      id: 'bgResponse',
                      parameters: [string(description: 'Current Version', name: 'currentVersion'),
                                   string(description: 'Updating Version', name: 'updatingVersion'),
