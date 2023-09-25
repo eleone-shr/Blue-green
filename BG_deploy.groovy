@@ -39,7 +39,7 @@ node {
                         choices: envTestList)]
         println(req)
 
-        if (req.environment == 'BLUE_GREEN') {
+        if (req.env == 'BLUE_GREEN') {
             echo 'Blue-green deployment selected'
             // iepBlueGreen()
         }
