@@ -39,9 +39,25 @@ node {
                         choices: envTestList)]
         println(req)
 
-        if (req.env == 'BLUE_GREEN') {
+        if (req.env == 'BLUE-GREEN') {
             echo 'Blue-green deployment selected'
-            // iepBlueGreen()
+            iepBlueGreen()
         }
     }
 }
+
+def iepBlueGreen() {
+    response = input message "Fill out the following for a blue-green manifest.",
+                     id: 'bgResponse',
+                     parameters: [string(description: 'Current Version', name: 'currentVersion'),
+                                  string(description: 'Updating Version', name: 'updatingVersion'),
+                                  string(description: 'Current Build ID', name: 'currentBuildID'),
+                                  string(description: 'Updating Build ID', name: 'updatingBuildID'),
+                                  string(description: 'Blue Weight', name: 'blueWeight'),
+                                  string(description: 'Green Weight', name: 'greenWeight'),
+                                  choice(name: 'environment',
+                                  choices: envTestList)]
+    println(response)
+
+}
+                                  
