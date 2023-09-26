@@ -90,13 +90,14 @@ def iepBlueGreen() {
         }
 
 
-        sh """
-                if [ -f manifest.yaml ] ; then
-                        rm -f manifest.yaml
-                fi
-        """
+        // sh """
+        //         if [ -f manifest.yaml ] ; then
+        //                 rm -f manifest.yaml
+        //         fi
+        // """
 
         writeYaml file: 'manifest.yaml', data: file, overwrite:true
+
 
         sh 'cat manifest.yaml'
     }
