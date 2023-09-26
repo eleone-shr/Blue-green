@@ -66,6 +66,8 @@ def iepBlueGreen() {
                                     choices: envTestList)]
         println(response)
 
+       
+
         file['environment'] = response["environment"].toLowerCase()
         file['version'] = response["currentVersion"] + "," + response["updatingVersion"]
         file['buildID'] = response["currentBuildID"] + "," + response["updatingBuildID"]
@@ -74,8 +76,14 @@ def iepBlueGreen() {
         file["deployment"]["type"] = "BG"
 
         try {
-            file['deployment']["blue"] = ["weight": response["blueWeight"].toInteger() ]
-            file['deployment']["green"] = ["weight": response["greenWeight"].toInteger() ]
+            def blueWeight = response["blueWeight"].toInteger()
+            def greenWeight = response["greenWeight"].toInteger() 
+            if (blueWeight + greenWeight == 100) {
+                file['deployment']["blue"] = ["weight": blueWeight ]
+                file['deployment']["green"] = ["weight": greenWeight ]
+            } else {
+                throw new Exception("Weights do not add up to 100")
+            }
         } catch (Exception exc) {
             echo "Blue green weight not inputted correctly!"
             throw exc
