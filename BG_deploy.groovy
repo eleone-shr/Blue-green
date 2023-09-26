@@ -73,8 +73,13 @@ def iepBlueGreen() {
 
         file["deployment"]["type"] = "BG"
 
-        file['deployment']["blue"] = ["weight": response["blueWeight"].toInteger() ]
-        file['deployment']["green"] = ["weight": response["greenWeight"].toInteger() ]
+        try {
+            file['deployment']["blue"] = ["weight": response["blueWeight"].toInteger() ]
+            file['deployment']["green"] = ["weight": response["greenWeight"].toInteger() ]
+        } catch (Exception exc) {
+            echo "Blue green weight not inputted correctly!"
+            throw exc
+        }
 
 
         sh """
