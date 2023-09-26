@@ -72,10 +72,9 @@ def iepBlueGreen() {
         file['kind'] = "promotion"
 
         file["deployment"]["type"] = "BG"
-        // file['deployment'].add(0,"[type:BG]")
 
-        // file['deployment'].add(1,"["blue": ["weight": response["blueWeight"]]]")
-        // file['deployment'].add(2,"["green": ["weight": response["greenWeight"]]]") 
+        file['deployment']["blue"] = ["weight": response["blueWeight"] ]
+        file['deployment']["green"] = ["weight": response["greenWeight"]]
 
 
         sh """
