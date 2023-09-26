@@ -73,8 +73,8 @@ def iepBlueGreen() {
 
         file["deployment"]["type"] = "BG"
 
-        file['deployment']["blue"] = ["weight": response["blueWeight"] ]
-        file['deployment']["green"] = ["weight": response["greenWeight"]]
+        file['deployment']["blue"] = ["weight": response["blueWeight"].toInteger() ]
+        file['deployment']["green"] = ["weight": response["greenWeight"].toInteger() ]
 
 
         sh """
