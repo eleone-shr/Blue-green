@@ -84,7 +84,9 @@ def iepBlueGreen(req) {
                 weightExc = input message: "Please re-input Weights correctly",
                                   id: "bgWeight",
                                   parameters: [string(description: 'Blue Weight', name: 'blueWeight'),
-                                               string(description: 'Green Weight', name: 'greenWeight')] 
+                                               string(description: 'Green Weight', name: 'greenWeight')]
+                blueWeight = weightExc["blueWeight"]
+                greenWeight = weightExc["greenWeight"] 
             } catch (Exception exc) {
                 echo "Blue green weight not integers!"    
             }
