@@ -78,8 +78,9 @@ def iepBlueGreen(req) {
 
         def blueWeight = response["blueWeight"].toInteger()
         def greenWeight = response["greenWeight"].toInteger()
+        def totalWeight = response["blueWeight"].toInteger() + response["greenWeight"].toInteger()
 
-        while ((blueWeight + greenWeight) != 100){
+        while (totalWeight != 100) {
             try { 
                 weightExc = input message: "Please re-input Weights correctly",
                                   id: "bgWeight",
@@ -87,14 +88,13 @@ def iepBlueGreen(req) {
                                                string(description: 'Green Weight', name: 'greenWeight')]
                 blueWeight = weightExc["blueWeight"].toInteger()   
                 greenWeight = weightExc["greenWeight"].toInteger()
+                totalWeight = blueWeight + greenWeight
             } catch (Exception exc) {
                 echo "Blue green weight not integers!"    
             }
         }
-        if (blueWeight + greenWeight == 100) {
             file['deployment']["blue"] = ["weight": blueWeight]
             file['deployment']["green"] = ["weight": greenWeight]
-        }
 
 
         // sh """
