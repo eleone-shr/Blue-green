@@ -42,12 +42,12 @@ node {
 
         if (req.env == 'BLUE-GREEN') {
             echo 'Blue-green deployment selected'
-            iepBlueGreen()
+            iepBlueGreen(req)
         }
     }
 }
 
-def iepBlueGreen() {
+def iepBlueGreen(req) {
     stage('Blue-Green Deploy') {
 
         copyArtifacts(projectName: env.JOB_NAME, selector: specific(env.BUILD_NUMBER), filter: 'manifest.yaml')
@@ -69,11 +69,12 @@ def iepBlueGreen() {
        
 
         file['environment'] = response["environment"].toLowerCase()
-        file['version'] = response["currentVersion"] + "," + response["updatingVersion"]
-        file['buildID'] = response["currentBuildID"] + "," + response["updatingBuildID"]
+        file['version'] = response["greenVersion"] + "," + response["blueVersion"]
+        file['buildID'] = response["greenBuildID"] + "," + response["blueBuildID"]
         file['kind'] = "promotion"
 
         file["deployment"]["type"] = "BG"
+        file["changeRequest"] = req["changeRequest"]
 
         try {
             def blueWeight = response["blueWeight"].toInteger()
