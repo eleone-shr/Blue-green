@@ -70,7 +70,7 @@ def iepBlueGreen(req) {
 
         file['environment'] = response["environment"].toLowerCase()
         file['version'] = response["blueVersion"] + "," + response["greenVersion"]
-        file['buildID'] = response["greenBuildID"] + "," + response["blueBuildID"]
+        file['buildID'] = response["blueBuildID"] + "," + response["greenBuildID"]
         file['kind'] = "promotion"
 
         file["deployment"]["type"] = "BG"
