@@ -90,7 +90,7 @@ def iepBlueGreen(pipelineEnv) {
             bgResponse = input message: "Select next Environment in B-G Deploy",
                             id: "bgPromotion",
                             parameters: [string(description: 'Adjust the current Blue Weight', name: 'promoBlueWeight', defaultValue: blueWeight ),
-                                            string(description: 'Adjust the current Green Weight', name: 'promoGreemWeight', defaultValue: greenWeight)
+                                            string(description: 'Adjust the current Green Weight', name: 'promoGreemWeight', defaultValue: greenWeight),
                                             choice(name: 'ENV',
                                             choices: bgEnvTestList)]
             println(bgResponse)
